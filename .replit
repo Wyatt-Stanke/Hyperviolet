@@ -1,2 +1,4 @@
 language = "nodejs"
-onBoot = "git submodule update --init --recursive"
+
+[packager]
+afterInstall = "git submodule update --init --recursive"
