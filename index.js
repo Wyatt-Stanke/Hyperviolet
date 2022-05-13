@@ -1,14 +1,31 @@
 import Server from 'bare-server-node';
 import http from 'http';
 import nodeStatic from 'node-static';
-
+import { bgBlue, bgGreen } from 'colorette'
 
 const bare =  new Server('/bare/', '');
 const serve = new nodeStatic.Server('static/');
 
 const server = http.createServer();
 
+const average = (array) => array.reduce((a, b) => a + b) / array.length;
+let averages = []
+
+setInterval(() => {
+	if (averages.length != 0) {
+		console.log(`${bgBlue("AVG")} ${Math.round(average(averages))}ms`)
+	}
+	
+	averages = []
+}, 1 * 1000)
+
 server.on('request', (request, response) => {
+	if (request.url != "/bare/v1/") console.log(`${bgGreen("VST")} ${request.headers["x-forwarded-for"]} - ${request.url}`)
+	const startMS = Date.now()
+	request.on("close", () => {
+		averages.push(Date.now() - startMS)
+	})
+	
     if (bare.route_request(request, response)) return true;
     serve.serve(request, response);
 });
