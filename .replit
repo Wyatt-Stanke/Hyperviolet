@@ -1,3 +1,2 @@
 language = "nodejs"
-run = "./main.sh"
-onBoot = "chmod u+x main.sh"
+onBoot = "git submodule update --init --recursive"
