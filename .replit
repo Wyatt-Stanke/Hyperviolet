@@ -2,3 +2,4 @@ language = "nodejs"
 
 [packager]
 afterInstall = "git submodule update --init --recursive"
+language = "nodejs-yarn"
