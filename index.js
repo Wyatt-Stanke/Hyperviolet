@@ -1,10 +1,13 @@
 import Server from 'bare-server-node';
 import http from 'http';
 import nodeStatic from 'node-static';
-import { bgBlue, bgGreen } from 'colorette'
+import { bgBlue, bgGreen, bgMagenta } from 'colorette'
 
 const bare =  new Server('/bare/', '');
+console.log(bgMagenta("UP!"), "TompHTTP server is up")
+
 const serve = new nodeStatic.Server('static/');
+console.log(bgMagenta("UP!"), "Static server is up")
 
 const server = http.createServer();
 
@@ -17,10 +20,10 @@ setInterval(() => {
 	}
 	
 	averages = []
-}, 1 * 1000)
+}, 60 * 60 * 1000)
 
 server.on('request', (request, response) => {
-	if (request.url != "/bare/v1/") console.log(`${bgGreen("VST")} ${request.headers["x-forwarded-for"]} - ${request.url}`)
+	// if (request.url != "/bare/v1/") console.log(`${bgGreen("VST")} ${request.headers["x-forwarded-for"]} - ${request.url}`)
 	const startMS = Date.now()
 	request.on("close", () => {
 		averages.push(Date.now() - startMS)
